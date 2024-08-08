@@ -28,24 +28,19 @@ st.markdown("""
         padding-bottom: 50px;
         }
     </style>
-    <div class="header">Análisis vehicular"</div>
-""")
+    <div class="header">Análisis vehicular</div>
+""", unsafe_allow_html=True)
 
 # Botón de gráfica para la creación del histograma
 hist_button = st.button("Construir un histograma")
 
 if hist_button:
-    st.write("Creación de histograma con la dispersión del kilometraje de los vehículos")
+    st.write(
+        "Creación de histograma con la dispersión del kilometraje de los vehículos")
     fig = px.histogram(
         car_data,
-        x="odometer",
-        color="season",
-        bargap=.005,
-        xref="odometer",
-        yref="cylinders",
-        fillcolor="PaleteTurquoise",
-        line_color="LightGray"
-        )
+        x="odometer"
+    )
     st.plotly_chart(fig, use_container_width=True)
 
 # Botón de gráfica para la creación del histograma
@@ -55,10 +50,7 @@ if scat_button:
     st.write("")
     fig = px.scatter(
         car_data,
-        x="model_year",
-        y="price",
-        xaxis_title="Año del modelo",
-        yaxis_title="Precio",
-        color="season"
-        )
+        x="odometer",
+        y="price"
+    )
     st.plotly_chart(fig, use_container_width=True)
