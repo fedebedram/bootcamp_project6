@@ -77,7 +77,7 @@ manufacturera = st.selectbox("Seleccione un fabricante:", car_data["manufacturer
 
 filtro = car_data[car_data["manufacturer"] == manufacturera]
 
-if filtro in car_data["manufacturer"]:
+if car_data["manufacturer"].isin([filtro]).any():
     modelo_1 = st.selectbox("Seleccione un vehículo:", filtro["model"].unique())
     modelo_2 = st.selectbox("Seleccione otro vehículo:", filtro["model"].unique())
 
@@ -93,7 +93,7 @@ if filtro in car_data["manufacturer"]:
 man1 = st.selectbox("Seleccione una compañía:", filtro["manufacturer"].unique())
 man2 = st.selectbox("Seleccione otra compañía:", filtro["manufacturer"].unique())
 
-if (man1 in car_data["manufacturer"]) and (man2 in car_data["manufacturer"]):
+if (car_data["manufacturer"].isin([man1]).any()) and (car_data["manufacturer"].isin([man2]).any()):
 
     filtro = car_data[car_data['manufacturer'].isin([man1, man2])]
     fig = px.histogram(filtro, x='days_listed', color="manufacturer", 
