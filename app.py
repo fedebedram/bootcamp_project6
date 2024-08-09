@@ -16,6 +16,7 @@ car_data["date_posted"] = pd.to_datetime(
     car_data["date_posted"], format="%Y-%m-%d")
 car_data["price"] = car_data["price"].astype("float")
 car_data["manufacturer"] = car_data["model"].str.split().str[0]
+car_data["model"] = car_data["model"].str.split().str[1]
 
 # Título de la página web
 st.markdown("""
@@ -32,12 +33,26 @@ st.markdown("""
     <div class="header">Análisis vehicular</div>
 """, unsafe_allow_html=True)
 
+car_data_top = car_data[car_data["price"]>=90000.0]
+car_data_top = car_data_top.reset_index(drop=True)
+car_data_top = car_data_top.reindex(["price", "manufacturer",
+                                     "model", "model_year",
+                                     "condition", "cylinders",
+                                     "odometer", "transmission",
+                                     "type", "fuel", "paint_color",
+                                     "is_4wd", "date_posted", 
+                                     "days_listed"
+                                     ],
+                                     axis=1)
+
 # Casilla de verificación con información relevante
-table_button = st.checkbox("Tabla de...")
-211
+table_button = st.checkbox("Mostrar tabla")
+
 if table_button:
     st.write(
-        "Creación de histograma con la dispersión del kilometraje de los vehículos")
+        "Los 20 vehículos más caros de la tienda")
+    st.dataframe(car_data_top, use_container_width=True)
+
 
 # Botón de gráfica para la creación del histograma
 hist_button = st.button("Construir un histograma")
@@ -59,6 +74,8 @@ if scat_button:
     fig = px.scatter(
         car_data,
         x="odometer",
-        y="price"
-    )
+        y="price",
+        hover_name="manufacturer",
+        color="condition"
+        )
     st.plotly_chart(fig, use_container_width=True)
