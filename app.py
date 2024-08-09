@@ -90,8 +90,8 @@ if len(filtro) >= 2:
 
 
 # Comparación de días de rotación entre marcas
-man1 = st.selectbox("Seleccione una compañía:", filtro["manufacturer"].unique())
-man2 = st.selectbox("Seleccione otra compañía:", filtro["manufacturer"].unique())
+man1 = st.selectbox("Seleccione una compañía:", car_data["manufacturer"].unique())
+man2 = st.selectbox("Seleccione otra compañía:", car_data["manufacturer"].unique())
 
 if (car_data["manufacturer"].isin([man1]).any()) and (car_data["manufacturer"].isin([man2]).any()):
 
