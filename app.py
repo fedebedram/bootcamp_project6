@@ -42,6 +42,7 @@ st.markdown("""
         font-family: 'Copperplate';
         color: #C1C9C2;
         padding-bottom: 30px;
+        padding-top: 50px;
         }
     </style>
     <div class="h1">Uso de casillas de verificación</div>
@@ -82,7 +83,7 @@ if table_button:
 if table_button2:
     st.write(
         "Vehículos con 0 kilometraje")
-    st.dataframe(car_data_top, use_container_width=True)
+    st.dataframe(car_data_0, use_container_width=True)
 
 st.markdown("""
     <div class="h1">Uso de botones</div>
