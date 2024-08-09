@@ -36,6 +36,19 @@ st.markdown("""
 
 st.markdown("""
     <style>
+    .header{
+        text-align: justified;
+        font-size: 20px;
+        font-family: 'Copperplate';
+        color: #C1C9C2;
+        font-weight: bold;
+        }
+    </style>
+    <div class="header">Primer página web donde se busca eficientar y automatizar el análisis de datos de una compañía de venta de coches. Se busca hacer uso de diferentes elementos tales como casillas de selección, botones y casillas de verificación, así como diferentes tipos de gráficas con datos relevantes para los usuarios.</div>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
     .h1{
         text-align: center;
         font-size: 35px;
