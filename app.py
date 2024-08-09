@@ -54,28 +54,50 @@ if table_button:
     st.dataframe(car_data_top, use_container_width=True)
 
 
-# Botón de gráfica para la creación del histograma
-hist_button = st.button("Construir un histograma")
+# Botón de gráfica para la creación de gráfico de caja
+box_button = st.button("Construir un gráfico de caja")
 
-if hist_button:
+if box_button:
     st.write(
-        "En construcción...")
-    fig = px.histogram(
-        car_data,
-        x="odometer"
-    )
+        "Comparación entre el kilometraje y la condición del vehículo")
+    fig = px.box(car_data, x='condition', y='odometer', color='condition', title='Condición vs Kilometraje')
     st.plotly_chart(fig, use_container_width=True)
 
-# Botón de gráfica para la creación del histograma
-scat_button = st.button("Construir un gráfico de dispersión")
+# Botón de gráfica para la creación de gráfico de violin
+vio_button = st.button("Construir un gráfico de violin")
 
-if scat_button:
-    st.write("En construcción...")
-    fig = px.scatter(
-        car_data,
-        x="odometer",
-        y="price",
-        hover_name="manufacturer",
-        color="condition"
-        )
+if vio_button:
+    st.write("Relación estre condición y año del vehículo")
+    fig = px.violin(car_data, x='model_year', y='condition', color='condition',
+                 title='Condición vs Año del Modelo')
     st.plotly_chart(fig, use_container_width=True)
+
+# Comparación de precios entre coches de una marca
+manufacturera = st.selectbox("Seleccione un fabricante:", car_data["manufacturer"].unique())
+
+filtro = car_data[car_data["manufacturer"] == manufacturera]
+
+if filtro in car_data["manufacturer"]:
+    modelo_1 = st.selectbox("Seleccione un vehículo:", filtro["model"].unique())
+    modelo_2 = st.selectbox("Seleccione otro vehículo:", filtro["model"].unique())
+
+    comp = filtro[filtro["model"].isin([modelo_1,modelo_2])]
+
+    fig = px.histogram(comp, x='price', color='model', 
+                       barmode='overlay', 
+                       histnorm='probability density', title=f"Comparación de precios entre {manufacturera} {modelo_1} y {manufacturera} {modelo_2}")
+    st.plotly_chart(fig, use_container_width=True)
+
+
+# Comparación de días de rotación entre marcas
+man1 = st.selectbox("Seleccione una compañía:", filtro["manufacturer"].unique())
+man2 = st.selectbox("Seleccione otra compañía:", filtro["manufacturer"].unique())
+
+if (man1 in car_data["manufacturer"]) and (man2 in car_data["manufacturer"]):
+
+    filtro = car_data[car_data['manufacturer'].isin([man1, man2])]
+    fig = px.histogram(filtro, x='days_listed', color="manufacturer", 
+                       barmode='overlay', 
+                       histnorm='probability density', title=f"Días de rotación entre{man1} y {man2}")
+    st.plotly_chart(fig, use_container_width=True)
+    
