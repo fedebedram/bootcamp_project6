@@ -77,7 +77,7 @@ manufacturera = st.selectbox("Seleccione un fabricante:", car_data["manufacturer
 
 filtro = car_data[car_data["manufacturer"] == manufacturera]
 
-if car_data["manufacturer"].isin([filtro]).any():
+if len(filtro) >= 2:
     modelo_1 = st.selectbox("Seleccione un vehículo:", filtro["model"].unique())
     modelo_2 = st.selectbox("Seleccione otro vehículo:", filtro["model"].unique())
 
@@ -98,6 +98,6 @@ if (car_data["manufacturer"].isin([man1]).any()) and (car_data["manufacturer"].i
     filtro = car_data[car_data['manufacturer'].isin([man1, man2])]
     fig = px.histogram(filtro, x='days_listed', color="manufacturer", 
                        barmode='overlay', 
-                       histnorm='probability density', title=f"Días de rotación entre{man1} y {man2}")
+                       histnorm='probability density', title=f"Días de rotación entre {man1} y {man2}")
     st.plotly_chart(fig, use_container_width=True)
     
