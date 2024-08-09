@@ -89,7 +89,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Botón de gráfica para la creación de gráfico de caja
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([3,1])
 with col1:
     box_button = st.button("Construir un gráfico de caja")
 
