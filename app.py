@@ -60,28 +60,28 @@ st.markdown("""
     <div class="h1">Uso de casillas de verificación</div>
 """, unsafe_allow_html=True)
 
-car_data_top = car_data[car_data["price"]>=90000.0]
+car_data_top = car_data[car_data["price"] >= 90000.0]
 car_data_top = car_data_top.reset_index(drop=True)
 car_data_top = car_data_top.reindex(["price", "manufacturer",
                                      "model", "model_year",
                                      "condition", "cylinders",
                                      "odometer", "transmission",
                                      "type", "fuel", "paint_color",
-                                     "is_4wd", "date_posted", 
+                                     "is_4wd", "date_posted",
                                      "days_listed"
                                      ],
-                                     axis=1)
+                                    axis=1)
 
-car_data_0 = car_data[car_data["odometer"]==0]
+car_data_0 = car_data[car_data["odometer"] == 0]
 car_data_0 = car_data_0.reset_index(drop=True)
 car_data_0 = car_data_0.reindex(["price", "manufacturer",
                                 "model", "model_year",
-                                "condition", "cylinders",
-                                "odometer", "transmission",
-                                "type", "fuel", "paint_color",
-                                "is_4wd", "date_posted", 
-                                "days_listed"
-                                ],
+                                 "condition", "cylinders",
+                                 "odometer", "transmission",
+                                 "type", "fuel", "paint_color",
+                                 "is_4wd", "date_posted",
+                                 "days_listed"
+                                 ],
                                 axis=1)
 
 # Casilla de verificación con información relevante
@@ -102,14 +102,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Botón de gráfica para la creación de gráfico de caja
-col1, col2 = st.columns([2,1])
+col1, col2 = st.columns([2, 1])
 with col1:
     box_button = st.button("Construir un gráfico de caja")
 
 if box_button:
     st.write(
         "Comparación entre el kilometraje y la condición del vehículo")
-    fig = px.box(car_data, x='condition', y='odometer', color='condition', title='Condición vs Kilometraje')
+    fig = px.box(car_data, x='condition', y='odometer',
+                 color='condition', title='Condición vs Kilometraje')
     st.plotly_chart(fig, use_container_width=True)
 
 # Botón de gráfica para la creación de gráfico de violin
@@ -119,7 +120,7 @@ with col2:
 if vio_button:
     st.write("Relación estre condición y año del vehículo")
     fig = px.violin(car_data, x='model_year', y='condition', color='condition',
-                 title='Condición vs Año del Modelo')
+                    title='Condición vs Año del Modelo')
     st.plotly_chart(fig, use_container_width=True)
 
 st.markdown("""
@@ -127,31 +128,40 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Comparación de precios entre coches de una marca
-manufacturera = st.selectbox("Seleccione un fabricante:", car_data["manufacturer"].unique())
+manufacturera = st.selectbox(
+    "Seleccione un fabricante:", car_data["manufacturer"].unique())
 
 filtro = car_data[car_data["manufacturer"] == manufacturera]
 
 if len(filtro) >= 2:
-    modelo_1 = st.selectbox("Seleccione un vehículo:", filtro["model"].unique())
-    modelo_2 = st.selectbox("Seleccione otro vehículo:", filtro["model"].unique())
+    modelo_1 = st.selectbox("Seleccione un vehículo:",
+                            filtro["model"].unique())
+    modelo_2 = st.selectbox("Seleccione otro vehículo:",
+                            filtro["model"].unique())
 
-    comp = filtro[filtro["model"].isin([modelo_1,modelo_2])]
+    comp = filtro[filtro["model"].isin([modelo_1, modelo_2])]
 
-    fig = px.histogram(comp, x='price', color='model', 
-                       barmode='overlay', 
+    fig = px.histogram(comp, x='price', color='model',
+                       barmode='overlay',
                        histnorm='probability density', title=f"Comparación de precios entre {manufacturera} {modelo_1} y {manufacturera} {modelo_2}")
     st.plotly_chart(fig, use_container_width=True)
 
+filtro2 = car_data[car_data["manufacturer"] == manufacturera]
+
+fig = px.scatter(filtro2, x="odometer", y="price", color="model",
+                 title=f"Relación precio/kilometraje del fabricante {manufacturera}")
+st.plotly_chart(fig, use_container_width=True)
 
 # Comparación de días de rotación entre marcas
-man1 = st.selectbox("Seleccione una compañía vehicular:", car_data["manufacturer"].unique())
-man2 = st.selectbox("Seleccione otra compañía vehicular:", car_data["manufacturer"].unique())
+man1 = st.selectbox("Seleccione una compañía vehicular:",
+                    car_data["manufacturer"].unique())
+man2 = st.selectbox("Seleccione otra compañía vehicular:",
+                    car_data["manufacturer"].unique())
 
 if (car_data["manufacturer"].isin([man1]).any()) and (car_data["manufacturer"].isin([man2]).any()):
 
     filtro = car_data[car_data['manufacturer'].isin([man1, man2])]
-    fig = px.histogram(filtro, x='days_listed', color="manufacturer", 
-                       barmode='overlay', 
+    fig = px.histogram(filtro, x='days_listed', color="manufacturer",
+                       barmode='overlay',
                        histnorm='probability density', title=f"Días de rotación entre {man1} y {man2}")
     st.plotly_chart(fig, use_container_width=True)
-    
